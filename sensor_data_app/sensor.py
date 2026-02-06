@@ -6,10 +6,12 @@ import numpy as np
 
 class SensorVisitCount:
 
-    def __init__(self, avg_visit:int, std_visit:int,) -> None:
+    def __init__(self, avg_visit:int, std_visit:int, perc_break : float = 0.02, perc_malfunction : float = 0.04) -> None:
  
         self.avg_visit = avg_visit
         self.std_visit = std_visit
+        self.perc_break = perc_break
+        self.perc_malfunction = perc_malfunction
 
     def simulate_visit_count(self, business_date: date) -> int:
 
@@ -35,6 +37,29 @@ class SensorVisitCount:
         # Return an integer
         return np.floor(visit)
 
+    def get_visit_count(self,  business_date:date) -> int:
+
+        np.random.seed(seed=business_date.toordinal())
+        proba_malfunction = np.random.random()
+
+        if proba_malfunction < self.perc_break:
+            return 0
+
+        visit = self.simulate_visit_count(business_date)
+
+        if proba_malfunction < self.perc_malfunction:
+            visit = np.floor(visit*0.2)
+
+        return visit
+
+
 if __name__ == "__main__":
+    if len(sys.argv) >1: # beacause self is already the first argv
+        year, month, day = [int(v) for v in sys.argv[1].split("-")]
+    else : 
+        year, month, day = 2026, 4, 2
+    
+    queried_date= date(year,month,day)
+
     capteur = SensorVisitCount(1000, 100)
-    print(capteur.simulate_visit_count(date(2026,2,4)))
+    print(capteur.get_visit_count(queried_date))
