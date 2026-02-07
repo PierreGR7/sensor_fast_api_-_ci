@@ -62,4 +62,6 @@ if __name__ == "__main__":
     queried_date= date(year,month,day)
 
     capteur = SensorVisitCount(1000, 100)
+    capteur2 = SensorVisitCount(2000,200)
     print(capteur.get_visit_count(queried_date))
+    print(capteur2.get_visit_count(queried_date))
