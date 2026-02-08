@@ -1,0 +1,4 @@
+{
+  "include": ["sensor_data_app", "tests_ci"],
+  "extraPaths": ["."]
+}
